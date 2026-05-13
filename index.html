@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EduQuest — Sistema de Pontos Escolar</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+ 
+<!-- ======================== LOGIN ======================== -->
+<div id="page-login" class="page active">
+  <div class="login-bg">
+    <div class="login-deco">
+      <div class="deco-circle c1"></div>
+      <div class="deco-circle c2"></div>
+      <div class="deco-circle c3"></div>
+    </div>
+    <div class="login-card">
+      <div class="login-logo">Edu<span>Quest</span></div>
+      <div class="login-tagline">Sistema de Pontos Escolar</div>
+ 
+      <div class="role-toggle">
+        <button class="role-btn active" id="role-aluno" onclick="selectRole('aluno')">Sou Aluno</button>
+        <button class="role-btn" id="role-professor" onclick="selectRole('professor')">Sou Professor</button>
+      </div>
+ 
+      <div class="login-form">
+        <div class="input-group">
+          <label>Matrícula</label>
+          <input type="text" id="login-matricula" placeholder="Ex: 2025001" />
+        </div>
+        <div class="input-group">
+          <label>Senha</label>
+          <input type="password" id="login-senha" placeholder="••••••••" />
+        </div>
+        <div class="login-error" id="login-error"></div>
+        <button class="login-btn" onclick="doLogin()">Entrar</button>
+        <div class="login-hint" id="login-hint">
+          Aluno: matrícula <strong>2025001</strong>, senha <strong>aluno123</strong>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+ 
+<!-- ======================== STUDENT VIEW ======================== -->
+<div id="page-student" class="page">
+ 
+  <nav class="topnav">
+    <button class="hamburger" id="hamburger" onclick="toggleSidebar()">&#9776;</button>
+    <div class="logo">Edu<span>Quest</span></div>
+    <div class="nav-divider"></div>
+    <div class="nav-subtitle">Área do Aluno</div>
+    <div class="nav-right">
+      <div class="nav-user" id="nav-user-name"></div>
+      <button class="logout-btn" onclick="doLogout()">Sair</button>
+    </div>
+  </nav>
+ 
+  <div class="sidebar-overlay" id="overlay" onclick="closeSidebar()"></div>
+ 
+  <div class="student-wrapper">
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-profile">
+        <div class="avatar-ring" id="sb-avatar">
+          <span id="sb-iniciais">MF</span>
+          <div class="level-badge" id="sb-level">Nv.5</div>
+        </div>
+        <div class="s-name" id="sb-name">Maria Fernanda</div>
+        <div class="s-class" id="sb-class">8º Ano A · Manhã</div>
+        <div class="pts-pill">
+          <div class="pts-num" id="pts-display">340</div>
+          <div class="pts-lbl">pontos<br>acumulados</div>
+        </div>
+      </div>
+ 
+      <nav class="nav-links">
+        <div class="nav-item active" data-tab="desafios" onclick="setTab(this, 'desafios')"><span class="nav-icon">🏆</span> Desafios</div>
+        <div class="nav-item" data-tab="recompensas" onclick="setTab(this, 'recompensas')"><span class="nav-icon">🎁</span> Recompensas</div>
+        <div class="nav-item" data-tab="progresso" onclick="setTab(this, 'progresso')"><span class="nav-icon">📊</span> Meu Progresso</div>
+        <div class="nav-item" data-tab="ranking" onclick="setTab(this, 'ranking')"><span class="nav-icon">🏅</span> Ranking</div>
+        <div class="nav-item" data-tab="config" onclick="setTab(this, 'config')" style="margin-top:16px"><span class="nav-icon">⚙️</span> Configurações</div>
+      </nav>
+    </aside>
+ 
+    <main class="main">
+ 
+      <!-- TAB: DESAFIOS -->
+      <div class="tab active" id="tab-desafios">
+        <div class="sec-title anim anim-1">
+          Desafios Ativos
+          <span class="sec-badge" id="badge-ativos">0 disponíveis</span>
+        </div>
+        <div class="challenges-grid anim anim-2" id="grid-ativos"></div>
+ 
+        <div class="sec-title anim anim-3" style="margin-top:8px">
+          Desafios Concluídos
+          <span class="sec-badge sec-badge-green" id="badge-concluidos">0 completos</span>
+        </div>
+        <div class="challenges-grid anim anim-4" id="grid-concluidos"></div>
+      </div>
+ 
+      <!-- TAB: RECOMPENSAS -->
+      <div class="tab" id="tab-recompensas">
+        <div class="sec-title anim anim-1">
+          Recompensas
+          <span class="sec-badge" id="badge-rewards">0 disponíveis</span>
+        </div>
+        <div class="rewards-grid anim anim-2" id="rewards-grid"></div>
+ 
+        <div class="sec-title anim anim-3" style="margin-top:24px">Histórico de Resgates</div>
+        <div class="history-list anim anim-4" id="history-list">
+          <div class="history-empty">Nenhum resgate ainda. Troque seus pontos acima!</div>
+        </div>
+      </div>
+ 
+      <!-- TAB: MEU PROGRESSO -->
+      <div class="tab" id="tab-progresso">
+        <div class="sec-title anim anim-1">Meu Progresso</div>
+ 
+        <div class="progress-stats anim anim-2">
+          <div class="prog-stat-card">
+            <div class="prog-stat-icon">⭐</div>
+            <div class="prog-stat-num" id="prog-pts">0</div>
+            <div class="prog-stat-lbl">Pontos totais</div>
+          </div>
+          <div class="prog-stat-card">
+            <div class="prog-stat-icon">✅</div>
+            <div class="prog-stat-num" id="prog-concluidos">0</div>
+            <div class="prog-stat-lbl">Desafios concluídos</div>
+          </div>
+          <div class="prog-stat-card">
+            <div class="prog-stat-icon">🎁</div>
+            <div class="prog-stat-num" id="prog-resgates">0</div>
+            <div class="prog-stat-lbl">Recompensas resgatadas</div>
+          </div>
+          <div class="prog-stat-card">
+            <div class="prog-stat-icon">🏅</div>
+            <div class="prog-stat-num" id="prog-ranking">—</div>
+            <div class="prog-stat-lbl">Posição no ranking</div>
+          </div>
+        </div>
+ 
+        <div class="sec-title anim anim-3" style="margin-top:24px">Nível e Experiência</div>
+        <div class="level-card anim anim-4" id="level-card">
+          <div class="level-header">
+            <div class="level-info">
+              <div class="level-name" id="level-name">Nível 1 — <span style="color:var(--purple)">Iniciante</span></div>
+              <div class="level-sub" id="level-sub">0 / 100 pts para o próximo nível</div>
+            </div>
+            <div class="level-badge-big" id="level-badge-big">Nv.1</div>
+          </div>
+          <div class="level-bar-wrap">
+            <div class="level-bar-fill" id="level-bar" style="width:0%"></div>
+          </div>
+          <div class="level-milestones">
+            <span id="level-prev">Nv. 0</span>
+            <span style="color:var(--purple);font-weight:800" id="level-pct">0% completo</span>
+            <span id="level-next">Nv. 2</span>
+          </div>
+        </div>
+ 
+        <div class="sec-title" style="margin-top:24px">Desafios — Detalhamento</div>
+        <div class="prog-challenges" id="prog-challenges-list"></div>
+ 
+        <div class="sec-title" style="margin-top:24px">Conquistas</div>
+        <div class="badges-grid" id="badges-grid"></div>
+      </div>
+ 
+      <!-- TAB: RANKING -->
+      <div class="tab" id="tab-ranking">
+        <div class="sec-title anim anim-1">Ranking Geral — <span id="ranking-turma">8º Ano A</span> <span class="sec-badge">Maio 2025</span></div>
+        <div class="podium anim anim-2" id="podium-container"></div>
+        <div class="ranking-list anim anim-3" id="ranking-list"></div>
+      </div>
+ 
+      <!-- TAB: CONFIG -->
+      <div class="tab" id="tab-config">
+        <div class="sec-title anim anim-1">Configurações</div>
+        <div class="config-card anim anim-2">
+          <div class="config-section-title">Conta</div>
+          <div class="config-row">
+            <div class="config-row-label">Nome completo</div>
+            <input class="config-input" type="text" id="config-nome" />
+          </div>
+          <div class="config-row">
+            <div class="config-row-label">Matrícula</div>
+            <input class="config-input" type="text" id="config-matricula" disabled />
+          </div>
+          <div class="config-row">
+            <div class="config-row-label">Turma</div>
+            <input class="config-input" type="text" id="config-turma" disabled />
+          </div>
+          <div class="config-section-title" style="margin-top:20px">Segurança</div>
+          <div class="config-row">
+            <div class="config-row-label">Nova senha</div>
+            <input class="config-input" type="password" id="config-nova-senha" placeholder="••••••••" />
+          </div>
+          <div class="config-row">
+            <div class="config-row-label">Confirmar senha</div>
+            <input class="config-input" type="password" id="config-conf-senha" placeholder="••••••••" />
+          </div>
+          <button class="save-btn" onclick="saveConfig()">Salvar alterações</button>
+        </div>
+      </div>
+ 
+    </main>
+  </div>
+</div>
+ 
+<!-- ======================== TEACHER VIEW ======================== -->
+<div id="page-teacher" class="page">
+ 
+  <nav class="topnav">
+    <div class="logo">Edu<span>Quest</span></div>
+    <div class="nav-divider"></div>
+    <div class="nav-subtitle">Painel do Professor</div>
+    <div class="nav-right">
+      <div class="nav-user" id="nav-teacher-name">Prof. Carlos</div>
+      <button class="logout-btn" onclick="doLogout()">Sair</button>
+    </div>
+  </nav>
+ 
+  <div class="teacher-main">
+ 
+    <div class="admin-header anim anim-1">
+      <div>
+        <div class="admin-title">Painel do Professor</div>
+        <div class="admin-sub">8º Ano A · 2º Bimestre 2025</div>
+      </div>
+      <button class="add-btn" onclick="openNewChallengeModal()">+ Novo Desafio</button>
+    </div>
+ 
+    <div class="stats-row anim anim-2">
+      <div class="stat-card">
+        <div class="stat-label">Total de Alunos</div>
+        <div class="stat-num">32</div>
+        <div class="stat-sub">3 turmas</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Desafios Ativos</div>
+        <div class="stat-num" id="teacher-stat-desafios">0</div>
+        <div class="stat-sub">gerenciados por você</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Resgates no mês</div>
+        <div class="stat-num">47</div>
+        <div class="stat-sub">+12 vs. mês passado</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Engajamento</div>
+        <div class="stat-num">78%</div>
+        <div class="stat-sub">acima da meta</div>
+      </div>
+    </div>
+ 
+    <div class="search-row anim anim-3">
+      <input class="search-input" type="text" id="search-aluno" placeholder="Buscar aluno por nome ou turma..." oninput="filterRanking()" />
+      <button class="filter-btn">Turma ▾</button>
+      <button class="filter-btn">Status ▾</button>
+    </div>
+ 
+    <div class="teacher-grid anim anim-4">
+      <div class="panel">
+        <div class="panel-header">Ranking de Alunos <span class="tag">por pontos</span></div>
+        <div id="teacher-ranking-list"></div>
+      </div>
+ 
+      <div class="panel">
+        <div class="panel-header">Desafios criados <span class="tag">progresso</span></div>
+        <div id="teacher-challenges-list"></div>
+        <div class="panel-empty" id="teacher-challenges-empty" style="padding:20px;text-align:center;font-size:13px;color:var(--muted)">
+          Nenhum desafio criado ainda.<br>Clique em "+ Novo Desafio" para começar.
+        </div>
+      </div>
+    </div>
+ 
+  </div>
+</div>
+ 
+<!-- ======================== MODAL: NOVO DESAFIO ======================== -->
+<div class="modal-overlay" id="modal-overlay" onclick="closeModal()"></div>
+<div class="modal" id="modal-challenge">
+  <div class="modal-header">
+    <div class="modal-title">Novo Desafio</div>
+    <button class="modal-close" onclick="closeModal()">✕</button>
+  </div>
+  <div class="modal-body">
+    <div class="input-group">
+      <label>Título</label>
+      <input class="config-input" type="text" id="new-title" placeholder="Ex: Nota acima de 8 em Matemática" />
+    </div>
+    <div class="input-group">
+      <label>Descrição</label>
+      <input class="config-input" type="text" id="new-desc" placeholder="Ex: Tire nota acima de 8 na próxima prova" />
+    </div>
+    <div class="input-group">
+      <label>Ícone (emoji)</label>
+      <input class="config-input" type="text" id="new-icon" placeholder="📚" maxlength="4" />
+    </div>
+    <div class="input-group">
+      <label>Pontos</label>
+      <input class="config-input" type="number" id="new-points" placeholder="Ex: 80" min="1" />
+    </div>
+    <div class="input-group">
+      <label>Prazo (dias)</label>
+      <input class="config-input" type="number" id="new-deadline" placeholder="Ex: 14" min="1" />
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button class="logout-btn" onclick="closeModal()" style="color:#fff">Cancelar</button>
+    <button class="save-btn" onclick="handleAddChallenge()">Criar Desafio</button>
+  </div>
+</div>
+ 
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+ 
+<script src="app.js"></script>
+</body>
+</html>
+ 
