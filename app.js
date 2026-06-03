@@ -4,10 +4,10 @@
 
 /* ===== USUÁRIOS ===== */
 const USERS = {
-  '2025001': { senha: 'aluno123', tipo: 'aluno', nome: 'Maria Fernanda Silva', turma: '8º Ano A · Manhã', iniciais: 'MF', nivel: 1, pts: 0, avatarClass: 'av-y' },
-  '2025002': { senha: 'aluno456', tipo: 'aluno', nome: 'Lucas Mendes',         turma: '8º Ano A · Manhã', iniciais: 'LR', nivel: 1, pts: 0, avatarClass: 'av-b' },
-  '2025003': { senha: 'aluno789', tipo: 'aluno', nome: 'Ana Clara Oliveira',   turma: '8º Ano A · Manhã', iniciais: 'AO', nivel: 1, pts: 0, avatarClass: 'av-g' },
-  'prof01':  { senha: 'prof2025', tipo: 'professor', nome: 'Prof. Carlos' },
+  '2026001': { senha: 'aluno123', tipo: 'aluno', nome: 'Maria Fernanda Silva', turma: '8º Ano A · Manhã', iniciais: 'MF', nivel: 1, pts: 0, avatarClass: 'av-y' },
+  '2026002': { senha: 'aluno456', tipo: 'aluno', nome: 'Lucas Mendes',         turma: '8º Ano A · Manhã', iniciais: 'LR', nivel: 1, pts: 0, avatarClass: 'av-b' },
+  '2026003': { senha: 'aluno789', tipo: 'aluno', nome: 'Ana Clara Oliveira',   turma: '8º Ano A · Manhã', iniciais: 'AO', nivel: 1, pts: 0, avatarClass: 'av-g' },
+  'prof01':  { senha: 'prof2026', tipo: 'professor', nome: 'Prof. Carlos' },
 };
 
 /* ===== RECOMPENSAS PADRÃO ===== */
@@ -60,9 +60,9 @@ function selectRole(role) {
 
   const hint = document.getElementById('login-hint');
   if (role === 'professor') {
-    hint.innerHTML = 'Professor: matrícula <strong>prof01</strong>, senha <strong>prof2025</strong>';
+    hint.innerHTML = 'EXEMPLO: Professor: matrícula <strong>profXX</strong>, senha <strong>xxxxxxxx</strong>';
   } else {
-    hint.innerHTML = 'Aluno: matrícula <strong>2025001</strong>, senha <strong>aluno123</strong>';
+    hint.innerHTML = 'Aluno: matrícula <strong>2026XXX</strong>, senha <strong>xxxxxxxx</strong>';
   }
 }
 
