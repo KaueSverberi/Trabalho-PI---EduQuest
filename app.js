@@ -17,7 +17,7 @@ const DEFAULT_REWARDS = [
   { id: 'r5', emoji: '🏆', nome: 'Troféu do Mês',      custo: 500 },
 ];
 
-/* ===== RANKING PADRÃO ===== */
+/* ===== RANKING PADRÃO (outros alunos) ===== */
 const RANKING_BASE = [
   { nome: 'Maria Fernanda S.', iniciais: 'MF', avatarClass: 'av-y', pts: 0, nivel: 1, matricula: '2025001' },
   { nome: 'Lucas R. Mendes',   iniciais: 'LR', avatarClass: 'av-b', pts: 0, nivel: 1, matricula: '2025002' },
@@ -756,6 +756,168 @@ function showToast(msg) {
   toastTimer = setTimeout(() => el.classList.remove('show'), 3000);
 }
 
+
+/* =============================================
+   TABS DO PROFESSOR
+   ============================================= */
+function setTeacherTab(tab) {
+  ['painel', 'usuarios'].forEach(t => {
+    document.getElementById('tpanel-' + t).style.display  = t === tab ? 'block' : 'none';
+    document.getElementById('ttab-' + t).classList.toggle('active', t === tab);
+  });
+  if (tab === 'usuarios') renderUsersPanel();
+}
+
+/* =============================================
+   PAINEL DE USUÁRIOS
+   ============================================= */
+// Paleta de avatares para novos alunos
+const AVATAR_CLASSES = ['av-y', 'av-b', 'av-g', 'av-p', 'av-v'];
+
+function getInitials(nome) {
+  const parts = nome.trim().split(' ').filter(Boolean);
+  if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
+  return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+}
+
+function renderUsersPanel() {
+  const alunosEl    = document.getElementById('users-alunos-list');
+  const profsEl     = document.getElementById('users-profs-list');
+  const alunosEmpty = document.getElementById('users-alunos-empty');
+  const profsEmpty  = document.getElementById('users-profs-empty');
+
+  const alunos = Object.entries(USERS).filter(([, u]) => u.tipo === 'aluno');
+  const profs  = Object.entries(USERS).filter(([m, u]) => u.tipo === 'professor' && m !== currentMatricula);
+
+  document.getElementById('count-alunos').textContent = alunos.length + ' aluno' + (alunos.length !== 1 ? 's' : '');
+  document.getElementById('count-profs').textContent  = profs.length + ' professor' + (profs.length !== 1 ? 'es' : '');
+
+  // --- Alunos ---
+  alunosEl.innerHTML = '';
+  if (alunos.length === 0) {
+    alunosEmpty.style.display = 'block';
+  } else {
+    alunosEmpty.style.display = 'none';
+    alunos.forEach(([matricula, u]) => {
+      const row = document.createElement('div');
+      row.className = 'user-row';
+      row.innerHTML = `
+        <div class="s-av ${u.avatarClass || 'av-b'}">${u.iniciais || getInitials(u.nome)}</div>
+        <div class="user-info">
+          <div class="user-info-name">${u.nome}</div>
+          <div class="user-info-meta">Mat: ${matricula} · ${u.turma || '—'}</div>
+        </div>
+        <div class="pts-badge">${u.pts} pts</div>
+        <button class="delete-btn" onclick="removeUser('${matricula}')">Remover</button>
+      `;
+      alunosEl.appendChild(row);
+    });
+  }
+
+  // --- Professores ---
+  profsEl.innerHTML = '';
+  if (profs.length === 0) {
+    profsEmpty.style.display = 'block';
+  } else {
+    profsEmpty.style.display = 'none';
+    profs.forEach(([matricula, u]) => {
+      const row = document.createElement('div');
+      row.className = 'user-row';
+      row.innerHTML = `
+        <div class="s-av av-p" style="background:#e8e4ff;color:var(--purple)">${getInitials(u.nome)}</div>
+        <div class="user-info">
+          <div class="user-info-name">${u.nome}</div>
+          <div class="user-info-meta">Mat: ${matricula}</div>
+        </div>
+        <button class="delete-btn" onclick="removeUser('${matricula}')">Remover</button>
+      `;
+      profsEl.appendChild(row);
+    });
+  }
+}
+
+function removeUser(matricula) {
+  const u = USERS[matricula];
+  if (!u) return;
+  if (!confirm(`Remover ${u.tipo === 'aluno' ? 'o aluno' : 'o professor'} "${u.nome}"?
+
+Essa ação não pode ser desfeita.`)) return;
+
+  // Remove do USERS e do RANKING_BASE se for aluno
+  delete USERS[matricula];
+  const idx = RANKING_BASE.findIndex(r => r.matricula === matricula);
+  if (idx !== -1) RANKING_BASE.splice(idx, 1);
+
+  showToast(`Usuário "${u.nome}" removido.`);
+  renderUsersPanel();
+  renderTeacherRanking();
+  updateTeacherStats();
+}
+
+/* =============================================
+   MODAL: NOVO USUÁRIO
+   ============================================= */
+let newUserRole = 'aluno';
+
+function openUserModal() {
+  newUserRole = 'aluno';
+  document.getElementById('new-user-role-aluno').classList.add('active');
+  document.getElementById('new-user-role-professor').classList.remove('active');
+  document.getElementById('new-user-turma-group').style.display = 'flex';
+  ['new-user-nome','new-user-matricula','new-user-senha','new-user-turma'].forEach(id => {
+    document.getElementById(id).value = '';
+  });
+  document.getElementById('modal-user-overlay').classList.add('open');
+  const modal = document.getElementById('modal-user');
+  modal.style.display = 'block';
+  requestAnimationFrame(() => modal.classList.add('open'));
+  document.getElementById('new-user-nome').focus();
+}
+
+function closeUserModal() {
+  const modal = document.getElementById('modal-user');
+  modal.classList.remove('open');
+  document.getElementById('modal-user-overlay').classList.remove('open');
+  setTimeout(() => { modal.style.display = 'none'; }, 220);
+}
+
+function selectNewUserRole(role) {
+  newUserRole = role;
+  document.getElementById('new-user-role-aluno').classList.toggle('active', role === 'aluno');
+  document.getElementById('new-user-role-professor').classList.toggle('active', role === 'professor');
+  document.getElementById('new-user-turma-group').style.display = role === 'aluno' ? 'flex' : 'none';
+}
+
+function handleAddUser() {
+  const nome      = document.getElementById('new-user-nome').value.trim();
+  const matricula = document.getElementById('new-user-matricula').value.trim();
+  const senha     = document.getElementById('new-user-senha').value.trim();
+  const turma     = document.getElementById('new-user-turma').value.trim();
+
+  if (!nome)      { showToast('Informe o nome completo.'); return; }
+  if (!matricula) { showToast('Informe a matrícula.'); return; }
+  if (USERS[matricula]) { showToast('Essa matrícula já está cadastrada!'); return; }
+  if (senha.length < 6) { showToast('A senha deve ter pelo menos 6 caracteres.'); return; }
+  if (newUserRole === 'aluno' && !turma) { showToast('Informe a turma do aluno.'); return; }
+
+  const iniciais    = getInitials(nome);
+  const avatarClass = AVATAR_CLASSES[Object.keys(USERS).filter(k => USERS[k].tipo === 'aluno').length % AVATAR_CLASSES.length];
+
+  if (newUserRole === 'aluno') {
+    USERS[matricula] = { senha, tipo: 'aluno', nome, turma, iniciais, avatarClass, nivel: 1, pts: 0 };
+    // Adicionar ao RANKING_BASE para aparecer no ranking
+    RANKING_BASE.push({ nome: nome.split(' ').slice(0,2).join(' '), iniciais, avatarClass, pts: 0, nivel: 1, matricula });
+  } else {
+    USERS[matricula] = { senha, tipo: 'professor', nome };
+  }
+
+  closeUserModal();
+  showToast(`✅ ${newUserRole === 'aluno' ? 'Aluno' : 'Professor'} "${nome}" cadastrado com sucesso!`);
+  renderUsersPanel();
+  renderTeacherRanking();
+  updateTeacherStats();
+}
+
 /* =============================================
    INIT
    ============================================= */
@@ -763,5 +925,5 @@ loadData();
 
 // Fechar modal com ESC
 document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') closeModal();
+  if (e.key === 'Escape') { closeModal(); closeUserModal(); }
 });

@@ -38,6 +38,9 @@
         </div>
         <div class="login-error" id="login-error"></div>
         <button class="login-btn" onclick="doLogin()">Entrar</button>
+        <div class="login-hint" id="login-hint">
+          Aluno: matrícula <strong>2025001</strong>, senha <strong>aluno123</strong>
+        </div>
       </div>
     </div>
   </div>
@@ -62,24 +65,24 @@
   <div class="student-wrapper">
     <aside class="sidebar" id="sidebar">
       <div class="sidebar-profile">
-        <div class="avatar-ring" id="sb-avatar">
-          <span id="sb-iniciais">MF</span>
-          <div class="level-badge" id="sb-level">Nv.5</div>
+        <div class="avatar-ring">
+          <span id="sb-iniciais">?</span>
+          <div class="level-badge" id="sb-level">Nv.1</div>
         </div>
-        <div class="s-name" id="sb-name">Maria Fernanda</div>
-        <div class="s-class" id="sb-class">8º Ano A · Manhã</div>
+        <div class="s-name" id="sb-name">—</div>
+        <div class="s-class" id="sb-class">—</div>
         <div class="pts-pill">
-          <div class="pts-num" id="pts-display">340</div>
+          <div class="pts-num" id="pts-display">0</div>
           <div class="pts-lbl">pontos<br>acumulados</div>
         </div>
       </div>
  
       <nav class="nav-links">
-        <div class="nav-item active" data-tab="desafios" onclick="setTab(this, 'desafios')"><span class="nav-icon">🏆</span> Desafios</div>
-        <div class="nav-item" data-tab="recompensas" onclick="setTab(this, 'recompensas')"><span class="nav-icon">🎁</span> Recompensas</div>
-        <div class="nav-item" data-tab="progresso" onclick="setTab(this, 'progresso')"><span class="nav-icon">📊</span> Meu Progresso</div>
-        <div class="nav-item" data-tab="ranking" onclick="setTab(this, 'ranking')"><span class="nav-icon">🏅</span> Ranking</div>
-        <div class="nav-item" data-tab="config" onclick="setTab(this, 'config')" style="margin-top:16px"><span class="nav-icon">⚙️</span> Configurações</div>
+        <div class="nav-item active" data-tab="desafios"    onclick="setTab(this,'desafios')"  ><span class="nav-icon">🏆</span> Desafios</div>
+        <div class="nav-item"        data-tab="recompensas" onclick="setTab(this,'recompensas')"><span class="nav-icon">🎁</span> Recompensas</div>
+        <div class="nav-item"        data-tab="progresso"   onclick="setTab(this,'progresso')" ><span class="nav-icon">📊</span> Meu Progresso</div>
+        <div class="nav-item"        data-tab="ranking"     onclick="setTab(this,'ranking')"   ><span class="nav-icon">🏅</span> Ranking</div>
+        <div class="nav-item"        data-tab="config"      onclick="setTab(this,'config')" style="margin-top:16px"><span class="nav-icon">⚙️</span> Configurações</div>
       </nav>
     </aside>
  
@@ -87,25 +90,16 @@
  
       <!-- TAB: DESAFIOS -->
       <div class="tab active" id="tab-desafios">
-        <div class="sec-title anim anim-1">
-          Desafios Ativos
-          <span class="sec-badge" id="badge-ativos">0 disponíveis</span>
-        </div>
+        <div class="sec-title anim anim-1">Desafios Ativos <span class="sec-badge" id="badge-ativos">0 disponíveis</span></div>
         <div class="challenges-grid anim anim-2" id="grid-ativos"></div>
  
-        <div class="sec-title anim anim-3" style="margin-top:8px">
-          Desafios Concluídos
-          <span class="sec-badge sec-badge-green" id="badge-concluidos">0 completos</span>
-        </div>
+        <div class="sec-title anim anim-3" style="margin-top:8px">Desafios Concluídos <span class="sec-badge sec-badge-green" id="badge-concluidos">0 completos</span></div>
         <div class="challenges-grid anim anim-4" id="grid-concluidos"></div>
       </div>
  
       <!-- TAB: RECOMPENSAS -->
       <div class="tab" id="tab-recompensas">
-        <div class="sec-title anim anim-1">
-          Recompensas
-          <span class="sec-badge" id="badge-rewards">0 disponíveis</span>
-        </div>
+        <div class="sec-title anim anim-1">Recompensas <span class="sec-badge" id="badge-rewards">0 disponíveis</span></div>
         <div class="rewards-grid anim anim-2" id="rewards-grid"></div>
  
         <div class="sec-title anim anim-3" style="margin-top:24px">Histórico de Resgates</div>
@@ -142,10 +136,10 @@
         </div>
  
         <div class="sec-title anim anim-3" style="margin-top:24px">Nível e Experiência</div>
-        <div class="level-card anim anim-4" id="level-card">
+        <div class="level-card anim anim-4">
           <div class="level-header">
             <div class="level-info">
-              <div class="level-name" id="level-name">Nível 1 — <span style="color:var(--purple)">Iniciante</span></div>
+              <div class="level-name" id="level-name">Nível 1 — <span style="color:var(--purple)">Novato</span></div>
               <div class="level-sub" id="level-sub">0 / 100 pts para o próximo nível</div>
             </div>
             <div class="level-badge-big" id="level-badge-big">Nv.1</div>
@@ -169,7 +163,7 @@
  
       <!-- TAB: RANKING -->
       <div class="tab" id="tab-ranking">
-        <div class="sec-title anim anim-1">Ranking Geral — <span id="ranking-turma">8º Ano A</span> <span class="sec-badge">Maio 2025</span></div>
+        <div class="sec-title anim anim-1">Ranking Geral <span class="sec-badge">Maio 2025</span></div>
         <div class="podium anim anim-2" id="podium-container"></div>
         <div class="ranking-list anim anim-3" id="ranking-list"></div>
       </div>
@@ -216,7 +210,7 @@
     <div class="nav-divider"></div>
     <div class="nav-subtitle">Painel do Professor</div>
     <div class="nav-right">
-      <div class="nav-user" id="nav-teacher-name">Prof. Carlos</div>
+      <div class="nav-user" id="nav-teacher-name"></div>
       <button class="logout-btn" onclick="doLogout()">Sair</button>
     </div>
   </nav>
@@ -228,52 +222,82 @@
         <div class="admin-title">Painel do Professor</div>
         <div class="admin-sub">8º Ano A · 2º Bimestre 2025</div>
       </div>
-      <button class="add-btn" onclick="openNewChallengeModal()">+ Novo Desafio</button>
-    </div>
- 
-    <div class="stats-row anim anim-2">
-      <div class="stat-card">
-        <div class="stat-label">Total de Alunos</div>
-        <div class="stat-num">32</div>
-        <div class="stat-sub">3 turmas</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-label">Desafios Ativos</div>
-        <div class="stat-num" id="teacher-stat-desafios">0</div>
-        <div class="stat-sub">gerenciados por você</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-label">Resgates no mês</div>
-        <div class="stat-num">47</div>
-        <div class="stat-sub">+12 vs. mês passado</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-label">Engajamento</div>
-        <div class="stat-num">78%</div>
-        <div class="stat-sub">acima da meta</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="add-btn" onclick="openNewChallengeModal()">+ Novo Desafio</button>
+        <button class="add-btn" onclick="openUserModal()" style="background:var(--navy)">+ Novo Usuário</button>
       </div>
     </div>
  
-    <div class="search-row anim anim-3">
-      <input class="search-input" type="text" id="search-aluno" placeholder="Buscar aluno por nome ou turma..." oninput="filterRanking()" />
-      <button class="filter-btn">Turma ▾</button>
-      <button class="filter-btn">Status ▾</button>
+    <!-- Tabs do professor -->
+    <div class="teacher-tabs anim anim-2">
+      <button class="teacher-tab active" id="ttab-painel"   onclick="setTeacherTab('painel')"  >📊 Painel</button>
+      <button class="teacher-tab"        id="ttab-usuarios" onclick="setTeacherTab('usuarios')">👥 Usuários</button>
     </div>
  
-    <div class="teacher-grid anim anim-4">
-      <div class="panel">
-        <div class="panel-header">Ranking de Alunos <span class="tag">por pontos</span></div>
-        <div id="teacher-ranking-list"></div>
-      </div>
+    <!-- ABA: PAINEL -->
+    <div id="tpanel-painel">
  
-      <div class="panel">
-        <div class="panel-header">Desafios criados <span class="tag">progresso</span></div>
-        <div id="teacher-challenges-list"></div>
-        <div class="panel-empty" id="teacher-challenges-empty" style="padding:20px;text-align:center;font-size:13px;color:var(--muted)">
-          Nenhum desafio criado ainda.<br>Clique em "+ Novo Desafio" para começar.
+      <div class="stats-row anim anim-2">
+        <div class="stat-card">
+          <div class="stat-label">Desafios Ativos</div>
+          <div class="stat-num" id="teacher-stat-desafios">0</div>
+          <div class="stat-sub">gerenciados por você</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Resgates no mês</div>
+          <div class="stat-num">47</div>
+          <div class="stat-sub">+12 vs. mês passado</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Engajamento</div>
+          <div class="stat-num">78%</div>
+          <div class="stat-sub">acima da meta</div>
         </div>
       </div>
-    </div>
+ 
+      <div class="search-row anim anim-3">
+        <input class="search-input" type="text" id="search-aluno" placeholder="Buscar aluno por nome..." oninput="filterRanking()" />
+      </div>
+ 
+      <div class="teacher-grid anim anim-4">
+        <div class="panel">
+          <div class="panel-header">Ranking de Alunos <span class="tag">por pontos</span></div>
+          <div id="teacher-ranking-list"></div>
+        </div>
+ 
+        <div class="panel">
+          <div class="panel-header">Desafios criados <span class="tag">marcar conclusão</span></div>
+          <div id="teacher-challenges-list"></div>
+          <div id="teacher-challenges-empty" style="padding:20px;text-align:center;font-size:13px;color:var(--muted)">
+            Nenhum desafio criado ainda.<br>Clique em "+ Novo Desafio" para começar.
+          </div>
+        </div>
+      </div>
+ 
+    </div><!-- fim tpanel-painel -->
+ 
+    <!-- ABA: USUÁRIOS -->
+    <div id="tpanel-usuarios" style="display:none">
+      <div class="teacher-grid anim anim-1">
+ 
+        <div class="panel">
+          <div class="panel-header">Alunos cadastrados <span class="tag" id="count-alunos">0 alunos</span></div>
+          <div id="users-alunos-list"></div>
+          <div id="users-alunos-empty" style="padding:20px;text-align:center;font-size:13px;color:var(--muted);display:none">
+            Nenhum aluno cadastrado.
+          </div>
+        </div>
+ 
+        <div class="panel">
+          <div class="panel-header">Professores cadastrados <span class="tag" id="count-profs">0 professores</span></div>
+          <div id="users-profs-list"></div>
+          <div id="users-profs-empty" style="padding:20px;text-align:center;font-size:13px;color:var(--muted);display:none">
+            Nenhum outro professor cadastrado.
+          </div>
+        </div>
+ 
+      </div>
+    </div><!-- fim tpanel-usuarios -->
  
   </div>
 </div>
@@ -310,6 +334,41 @@
   <div class="modal-footer">
     <button class="logout-btn" onclick="closeModal()" style="color:#fff">Cancelar</button>
     <button class="save-btn" onclick="handleAddChallenge()">Criar Desafio</button>
+  </div>
+</div>
+ 
+<!-- ======================== MODAL: NOVO USUÁRIO ======================== -->
+<div class="modal-overlay" id="modal-user-overlay" onclick="closeUserModal()"></div>
+<div class="modal" id="modal-user">
+  <div class="modal-header">
+    <div class="modal-title">Novo Usuário</div>
+    <button class="modal-close" onclick="closeUserModal()">✕</button>
+  </div>
+  <div class="modal-body">
+    <div class="role-toggle" style="margin-bottom:0">
+      <button class="role-btn active" id="new-user-role-aluno"    onclick="selectNewUserRole('aluno')">Aluno</button>
+      <button class="role-btn"        id="new-user-role-professor" onclick="selectNewUserRole('professor')">Professor</button>
+    </div>
+    <div class="input-group">
+      <label>Nome completo</label>
+      <input class="config-input" type="text" id="new-user-nome" placeholder="Ex: João da Silva" />
+    </div>
+    <div class="input-group">
+      <label>Matrícula</label>
+      <input class="config-input" type="text" id="new-user-matricula" placeholder="Ex: 2025010" />
+    </div>
+    <div class="input-group">
+      <label>Senha</label>
+      <input class="config-input" type="password" id="new-user-senha" placeholder="Mínimo 6 caracteres" />
+    </div>
+    <div class="input-group" id="new-user-turma-group">
+      <label>Turma</label>
+      <input class="config-input" type="text" id="new-user-turma" placeholder="Ex: 8º Ano A · Manhã" />
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button class="logout-btn" onclick="closeUserModal()" style="color:#fff">Cancelar</button>
+    <button class="save-btn" onclick="handleAddUser()">Cadastrar</button>
   </div>
 </div>
  
