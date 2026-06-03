@@ -62,7 +62,7 @@ function selectRole(role) {
   if (role === 'professor') {
     hint.innerHTML = 'EXEMPLO: Professor: matrícula <strong>profXX</strong>, senha <strong>xxxxxxxx</strong>';
   } else {
-    hint.innerHTML = 'Aluno: matrícula <strong>2026XXX</strong>, senha <strong>xxxxxxxx</strong>';
+    hint.innerHTML = 'EXEMPLO: Aluno: matrícula <strong>2026XXX</strong>, senha <strong>xxxxxxxx</strong>';
   }
 }
 
